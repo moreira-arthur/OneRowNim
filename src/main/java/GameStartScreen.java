@@ -41,7 +41,45 @@ public class GameStartScreen extends JFrame implements ActionListener {
 
         amount = new JLabel("How many computers are playing, 0, 1, or 2? ");
         amount.setFont(new Font("Serif",Font.BOLD, 20));
-        // ...
+        amount.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        startScreen.add(amount, gbc);
+
+        inputPlayer = new JTextField();
+        inputPlayer.setFont(new Font("Serif",Font.BOLD, 20));
+        inputPlayer.setBackground(Color.WHITE);
+        inputPlayer.setForeground(Color.BLACK);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        startScreen.add(inputPlayer, gbc);
+
+        startButton = new JButton("Start");
+        startButton.setFont(new Font("Serif",Font.BOLD, 20));
+        startButton.setBackground(Color.WHITE);
+        startButton.setForeground(Color.BLACK);
+        startButton.addActionListener(this);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        startScreen.add(startButton, gbc);
     }
-    // ...
+
+    public void actionPerformed(ActionEvent e) {
+        String input = inputPlayer.getText();
+        try {
+            int nComputers = Integer.parseInt(input);
+            if (nComputers >= 0 && nComputers < 3) {
+                startScreen.dispose();
+                new GameScreen(nComputers);
+
+            }else{
+                JOptionPane.showMessageDialog(startScreen, "Number of players must be one of the follow numbers: 0, 1, 2.");
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(startScreen, "Please enter a valid number.");
+        }
+    }
 }
