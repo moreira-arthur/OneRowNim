@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  */
 public class GameFinalScreen extends JFrame implements ActionListener {
     private final JFrame finalScreen;
-
+    private JButton resetButton;
     /**
      * Constructor for the GameFinalScreen class.
      * It initializes the final screen with the winner's details.
@@ -49,7 +49,7 @@ public class GameFinalScreen extends JFrame implements ActionListener {
         gbc.gridwidth = 1;
         finalScreen.add(victoryLabel, gbc);
 
-        JButton resetButton = new JButton("Reset");
+        resetButton = new JButton("Reset");
         resetButton.setFont(new Font("Serif",Font.BOLD, 20));
         resetButton.setBackground(Color.WHITE);
         resetButton.setForeground(Color.BLACK);
@@ -58,12 +58,26 @@ public class GameFinalScreen extends JFrame implements ActionListener {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         finalScreen.add(resetButton, gbc);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.setFont(new Font("Serif",Font.BOLD, 20));
+        exitButton.setBackground(Color.RED);
+        exitButton.setForeground(Color.BLACK);
+        exitButton.addActionListener(this);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        finalScreen.add(exitButton, gbc);
     }
+    /**
+     * This method performs an action when a button is clicked.
+     *
+     * @param e The action event.
+    */
     public void actionPerformed(ActionEvent e) {
         finalScreen.dispose();
-        new GameStartScreen();
-    }
-    public static void main(String[] args) {
-        new GameFinalScreen(1);
+        if(e.getSource() == resetButton){
+            new GameStartScreen();
+        }
     }
 }

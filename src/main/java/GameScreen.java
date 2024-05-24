@@ -3,6 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class represents the game screen of the game.
+ * It extends JFrame and implements ActionListener.
+ * The game screen displays the game and allows the user to play.
+ */
 public class GameScreen extends JFrame implements ActionListener{
 
     private OneRowNim game;
@@ -13,9 +18,13 @@ public class GameScreen extends JFrame implements ActionListener{
     private JButton take1, take2, take3;
     private JTextArea outTextArea;
 
-
+    /**
+     * Constructor for the GameScreen class.
+     * It initializes the game screen and makes it visible.
+     *
+     * @param nComputers The number of computers playing the game.
+     */
     public GameScreen(int nComputers){
-        // GameScreen constructor
         gameScreen = new JFrame("Game Screen");
         gameScreen.setDefaultCloseOperation(EXIT_ON_CLOSE);
         gameScreen.setSize(900,900);
@@ -32,67 +41,71 @@ public class GameScreen extends JFrame implements ActionListener{
         
     }
 
+    /**
+     * This method initializes and adds components to the game screen.
+     */
     public void initAndAddComponents(){
-        // game = new OneRowNim();
-        // This method initializes and adds components to the game screen.
         gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10,10,10,10);
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.insets = new Insets(10,10,10,10);
 
         playerTurn = new JLabel("Player 1's turn");
-        playerTurn.setFont(new Font("Serif",Font.BOLD, 20));
-        playerTurn.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
+            playerTurn.setFont(new Font("Serif",Font.BOLD, 20));
+            playerTurn.setForeground(Color.WHITE);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 1;
         gameScreen.add(playerTurn, gbc);
 
         nStricks = new JLabel("Number of sticks left: " + game.getSticks());
-        nStricks.setFont(new Font("Serif",Font.BOLD, 20));
-        nStricks.setForeground(Color.WHITE);
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
+            nStricks.setFont(new Font("Serif",Font.BOLD, 20));
+            nStricks.setForeground(Color.WHITE);
+            gbc.gridx = 2;
+            gbc.gridy = 0;
+            gbc.gridwidth = 1;
         gameScreen.add(nStricks, gbc);
 
         take1 = new JButton("Take 1");
-        take1.setFont(new Font("Serif",Font.BOLD, 20));
-        take1.addActionListener(this);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
+            take1.setFont(new Font("Serif",Font.BOLD, 20));
+            take1.addActionListener(this);
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
         gameScreen.add(take1, gbc);
 
         take2 = new JButton("Take 2");
-        take2.setFont(new Font("Serif",Font.BOLD, 20));
-        take2.addActionListener(this);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
+            take2.setFont(new Font("Serif",Font.BOLD, 20));
+            take2.addActionListener(this);
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
         gameScreen.add(take2, gbc);
 
         take3 = new JButton("Take 3");
-        take3.setFont(new Font("Serif",Font.BOLD, 20));
-        take3.addActionListener(this);
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
+            take3.setFont(new Font("Serif",Font.BOLD, 20));
+            take3.addActionListener(this);
+            gbc.gridx = 2;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
         gameScreen.add(take3, gbc);
 
-
         outTextArea = new JTextArea(10, 30);
-        outTextArea.setFont(new Font("Monospaced",Font.PLAIN, 16));
-        outTextArea.setBackground(Color.WHITE);
-        outTextArea.setForeground(Color.BLACK);
-        outTextArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(outTextArea);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 3;
+            outTextArea.setFont(new Font("Monospaced",Font.PLAIN, 16));
+            outTextArea.setBackground(Color.WHITE);
+            outTextArea.setForeground(Color.BLACK);
+            outTextArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(outTextArea);
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.gridwidth = 3;
         gameScreen.add(scrollPane, gbc);
 
     }
 
+    /**
+     * This method initializes the game.
+     * It adds the computers to the game and starts the game.
+     */
     public void initGame(){
 
         JOptionPane.showMessageDialog(gameScreen, game.getRules());
@@ -115,14 +128,28 @@ public class GameScreen extends JFrame implements ActionListener{
                 play();
             }
             outTextArea.append("\nPlayer "+ game.getPlayer() + " wins!\n");
-            showWinner(game.getPlayer());
+            showWinner();
         }
     }
 
-    public void showWinner(int player){
-        	
+    /**
+     * This method shows the winner of the game creating a new scene.
+     */
+    public void showWinner(){
+        Timer timer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameScreen.dispose();
+                new GameFinalScreen(game.getPlayer());
+            }
+        });
+        timer.setRepeats(false);  // Garante que o Timer execute apenas uma vez
+        timer.start();
     }
 
+    /**
+     * This method simulates the computer's turn.
+     */
     public void play(){
         int sticks = 0;
         IPlayer computer = null; // Assume no computers playing
@@ -145,6 +172,14 @@ public class GameScreen extends JFrame implements ActionListener{
         } // If a legal move
     }
 
+    /**
+     * This method performs an action when a button is clicked.
+     * It also checks if the game is over.
+     * If the game is over, it shows the winner.
+     * If there is only one computer playing, it simulates the computer's turn.
+     *
+     * @param e The action event.
+     */
     public void actionPerformed(ActionEvent e){
         // This method is called when the start button is clicked.
         if(e.getSource() == take1){
@@ -183,11 +218,8 @@ public class GameScreen extends JFrame implements ActionListener{
             take1.setEnabled(false);
             take2.setEnabled(false);
             take3.setEnabled(false);
+            showWinner();
         }
     }
 
-    public static void main(String[] args) {
-        // This is the main method that creates a new GameStartScreen object.
-        new GameScreen(1);
-    }
 }

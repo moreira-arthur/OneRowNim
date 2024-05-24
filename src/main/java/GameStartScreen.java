@@ -67,6 +67,10 @@ public class GameStartScreen extends JFrame implements ActionListener {
         startScreen.add(startButton, gbc);
     }
 
+    /**
+     * This method is called when the start button is clicked.
+     * It checks if the input is valid and starts the game.
+     */
     public void actionPerformed(ActionEvent e) {
         String input = inputPlayer.getText();
         try {
